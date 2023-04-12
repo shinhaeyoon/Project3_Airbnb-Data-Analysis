@@ -15,11 +15,11 @@
 
 
 Steps:
-0. Choice of Data sources
-1.ETL / Notebook
-2. Database Schema
-3. Flask API endpoints
-4. communication d3 <=> flask
-5. html/css layout
-6. code /charts / table
-7. new JS library charts.js
+1. Choice of Data sources
+2. ETL / Notebook
+3. Database Schema
+4. Flask API endpoints
+5. communication d3 <=> flask
+6. html/css layout
+7. code /charts / table
+8. new JS library charts.js
