@@ -7,7 +7,7 @@
 - Airbnb ratings/ guest satisfaction (bins)
 - BONUS: distance from city center and metro
 
-
+--------------------------------------------------------------
 - Maps: Heat maps to show the highest prices in Europe
 - Chart.js 
 - Using SQLite Database
