@@ -8,11 +8,10 @@
 - BONUS: distance from city center and metro
 
 
-Maps
-Heat maps to show the highest prices in Europe
-Chart.js 
-Using SQLite Database
-Flasks - refer to SQL-Alchemy homework
+- Maps: Heat maps to show the highest prices in Europe
+- Chart.js 
+- Using SQLite Database
+- Flasks: refer to SQL-Alchemy homework
 
 
 Steps:
