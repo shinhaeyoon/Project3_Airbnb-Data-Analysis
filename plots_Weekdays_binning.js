@@ -11,7 +11,7 @@ console.log(ratings);
 let trace1 = {
   x: ratings,
     type: 'histogram',
-    nbinsx: 10
+    nbinsx: 20
 };
 
 // Data trace array

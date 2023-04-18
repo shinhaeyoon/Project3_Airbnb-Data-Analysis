@@ -1,4 +1,4 @@
-weekends = [{
+Vienna = [{
   "realSum": 324.6616647,
   "room_type": "Entire home/apt",
   "guest_satisfaction_overall": 94,
@@ -14390,9 +14390,7 @@ weekends = [{
   "lng": 16.39066,
   "lat": 48.20811,
   "loc": "Vienna"
-}];
-
-weekdays = [{
+}, {
   "realSum": 250.5668139,
   "guest_satisfaction_overall": 99,
   "bedrooms": 1,
@@ -26561,36 +26559,63 @@ weekdays = [{
 }];
 
 // An array that will store the created cityMarkers
-var weekendsMarkers = [];
-var weekdaysMarkers= [];
+var lowsatisfactionMarkers = [];
+var middlesatisfactionMarkers = [];
+var highsatisfactionMarkers = [];
 
 
-for (var i = 0; i < weekends.length; i++) {
-  // loop through the cities array, create a new marker, and push it to the cityMarkers array
-  weekendsMarkers.push(
-    L.marker([weekends[i].lat, weekends[i].lng]).bindPopup("<h1>" +"€ "+ weekends[i].realSum.toFixed(2) + "</h1>")
-  );
+for (var i = 0; i < Vienna.length; i++) {
+  if (Vienna[i].guest_satisfaction_overall < 90) {
+    // loop through the cities array, create a new marker, and push it to the cityMarkers array
+    lowsatisfactionMarkers.push(
+      L.marker(
+        [Vienna[i].lat, Vienna[i].lng]
+      ).bindPopup("<h1>" + "€ " + Vienna[i].realSum.toFixed(2) + "</h1>" + "\n"
+        + "<h2>" + "rating: " + Vienna[i].guest_satisfaction_overall + "</h2>" + "\n"
+        + "<h2>" + "bedrooms: " + Vienna[i].bedrooms + "</h2>"));
+  }
 }
 
-for (var i = 0; i < weekdays.length; i++) {
-  // loop through the cities array, create a new marker, and push it to the cityMarkers array
-  weekdaysMarkers.push(
-    L.marker([weekdays[i].lat, weekdays[i].lng]).bindPopup("<h1>" +"€ "+ weekdays[i].realSum.toFixed(2) + "</h1>")
-  );
+for (var i = 0; i < Vienna.length; i++) {
+  if ((90 <= Vienna[i].guest_satisfaction_overall) && (Vienna[i].guest_satisfaction_overall < 100)) {
+    // loop through the cities array, create a new marker, and push it to the cityMarkers array
+    middlesatisfactionMarkers.push(
+      L.marker(
+        [Vienna[i].lat, Vienna[i].lng]
+      ).bindPopup("<h1>" + "€ " + Vienna[i].realSum.toFixed(2) + "</h1>" + "\n"
+        + "<h2>" + "rating: " + Vienna[i].guest_satisfaction_overall + "</h2>" + "\n"
+        + "<h2>" + "bedrooms: " + Vienna[i].bedrooms + "</h2>"));
+  }
 }
+
+for (var i = 0; i < Vienna.length; i++) {
+  if (100 <= Vienna[i].guest_satisfaction_overall) {
+    // loop through the cities array, create a new marker, and push it to the cityMarkers array
+    highsatisfactionMarkers.push(
+      L.marker(
+        [Vienna[i].lat, Vienna[i].lng]
+      ).bindPopup("<h1>" + "€ " + Vienna[i].realSum.toFixed(2) + "</h1>" + "\n"
+        + "<h2>" + "rating: " + Vienna[i].guest_satisfaction_overall + "</h2>" + "\n"
+        + "<h2>" + "bedrooms: " + Vienna[i].bedrooms + "</h2>"));
+  }
+}
+
+
 
 // Add all the cityMarkers to a new layer group.
 // Now, we can handle them as one group instead of referencing each one individually.
-var weekendsLayer = L.layerGroup(weekendsMarkers);
-var weekdaysLayer = L.layerGroup(weekdaysMarkers);
+var lowsatisfactionLayer = L.layerGroup(lowsatisfactionMarkers);
+var middlesatisfactionLayer = L.layerGroup(middlesatisfactionMarkers);
+var highsatisfactionLayer = L.layerGroup(highsatisfactionMarkers);
+
 
 // Define variables for our tile layers.
 var street = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 })
 
 var topo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-	attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+  attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
 });
 
 // Only one base layer can be shown at a time.
@@ -26601,8 +26626,9 @@ var baseMaps = {
 
 // Overlays that can be toggled on or off
 var overlayMaps = {
-  Weekdays: weekdaysLayer,
-  Weekends: weekendsLayer
+  LowSatisfaction: lowsatisfactionLayer,
+  MiddleSatisfaction: middlesatisfactionLayer,
+  HighSatisfaction: highsatisfactionLayer,
 };
 
 // Create a map object, and set the default layers.
@@ -26610,31 +26636,23 @@ var myMap = L.map("map", {
   center: [48.210033, 16.363449],
   zoom: 12,
   //default layer
-  layers: [street, weekdaysLayer]
+  layers: [street, lowsatisfactionLayer]
 });
 
 
-function markerSize(realSum) {
-  return Math.sqrt(realSum) * 0.3;
+function markerSize(markerRadius) {
+  return Math.sqrt(markerRadius) * 0.3;
 }
 
-for (let airbnb_weekends of weekends) {
-  L.circle([airbnb_weekends["lat"],airbnb_weekends["lng"]], {
+for (let airbnb of Vienna) {
+  L.circle([airbnb["lat"], airbnb["lng"]], {
     fillOpacity: 0.75,
     color: "black",
-    fillColor: "lightblue",
-    radius: markerSize(airbnb_weekends["realSum"])
+    fillColor: "blue",
+    radius: markerSize(airbnb["realSum"])
   }).addTo(myMap);
 }
 
-for (let airbnb_weekdays of weekdays) {
-  L.circle([airbnb_weekdays["lat"],airbnb_weekdays["lng"]], {
-    fillOpacity: 0.75,
-    color: "black",
-    fillColor: "lightblue",
-    radius: markerSize(airbnb_weekdays["realSum"])
-  }).addTo(myMap);
-}
 
 // Pass our map layers to our layer control.
 // Add the layer control to the map.

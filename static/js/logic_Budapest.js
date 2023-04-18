@@ -1,4 +1,4 @@
-weekends = [{
+Budapest = [{
   "realSum": 332.0486911,
   "guest_satisfaction_overall": 99,
   "bedrooms": 1,
@@ -13634,9 +13634,7 @@ weekends = [{
   "lng": 19.07,
   "lat": 47.488,
   "loc": "Budapest"
-}];
-
-weekdays = [{
+}, {
   "realSum": 238.9904592,
   "guest_satisfaction_overall": 99,
   "bedrooms": 1,
@@ -28157,36 +28155,63 @@ weekdays = [{
 }];
 
 // An array that will store the created cityMarkers
-var weekendsMarkers = [];
-var weekdaysMarkers= [];
+var lowsatisfactionMarkers = [];
+var middlesatisfactionMarkers = [];
+var highsatisfactionMarkers = [];
 
 
-for (var i = 0; i < weekends.length; i++) {
-  // loop through the cities array, create a new marker, and push it to the cityMarkers array
-  weekendsMarkers.push(
-    L.marker([weekends[i].lat, weekends[i].lng]).bindPopup("<h1>" +"€ "+ weekends[i].realSum.toFixed(2) + "</h1>")
-  );
+for (var i = 0; i < Budapest.length; i++) {
+  if (Budapest[i].guest_satisfaction_overall < 90) {
+    // loop through the cities array, create a new marker, and push it to the cityMarkers array
+    lowsatisfactionMarkers.push(
+      L.marker(
+        [Budapest[i].lat, Budapest[i].lng]
+      ).bindPopup("<h1>" + "€ " + Budapest[i].realSum.toFixed(2) + "</h1>" + "\n"
+        + "<h2>" + "rating: " + Budapest[i].guest_satisfaction_overall + "</h2>" + "\n"
+        + "<h2>" + "bedrooms: " + Budapest[i].bedrooms + "</h2>"));
+  }
 }
 
-for (var i = 0; i < weekdays.length; i++) {
-  // loop through the cities array, create a new marker, and push it to the cityMarkers array
-  weekdaysMarkers.push(
-    L.marker([weekdays[i].lat, weekdays[i].lng]).bindPopup("<h1>" +"€ "+ weekdays[i].realSum.toFixed(2) + "</h1>")
-  );
+for (var i = 0; i < Budapest.length; i++) {
+  if ((90 <= Budapest[i].guest_satisfaction_overall) && (Budapest[i].guest_satisfaction_overall < 100)) {
+    // loop through the cities array, create a new marker, and push it to the cityMarkers array
+    middlesatisfactionMarkers.push(
+      L.marker(
+        [Budapest[i].lat, Budapest[i].lng]
+      ).bindPopup("<h1>" + "€ " + Budapest[i].realSum.toFixed(2) + "</h1>" + "\n"
+        + "<h2>" + "rating: " + Budapest[i].guest_satisfaction_overall + "</h2>" + "\n"
+        + "<h2>" + "bedrooms: " + Budapest[i].bedrooms + "</h2>"));
+  }
 }
+
+for (var i = 0; i < Budapest.length; i++) {
+  if (100 <= Budapest[i].guest_satisfaction_overall) {
+    // loop through the cities array, create a new marker, and push it to the cityMarkers array
+    highsatisfactionMarkers.push(
+      L.marker(
+        [Budapest[i].lat, Budapest[i].lng]
+      ).bindPopup("<h1>" + "€ " + Budapest[i].realSum.toFixed(2) + "</h1>" + "\n"
+        + "<h2>" + "rating: " + Budapest[i].guest_satisfaction_overall + "</h2>" + "\n"
+        + "<h2>" + "bedrooms: " + Budapest[i].bedrooms + "</h2>"));
+  }
+}
+
+
 
 // Add all the cityMarkers to a new layer group.
 // Now, we can handle them as one group instead of referencing each one individually.
-var weekendsLayer = L.layerGroup(weekendsMarkers);
-var weekdaysLayer = L.layerGroup(weekdaysMarkers);
+var lowsatisfactionLayer = L.layerGroup(lowsatisfactionMarkers);
+var middlesatisfactionLayer = L.layerGroup(middlesatisfactionMarkers);
+var highsatisfactionLayer = L.layerGroup(highsatisfactionMarkers);
+
 
 // Define variables for our tile layers.
 var street = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 })
 
 var topo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-	attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+  attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
 });
 
 // Only one base layer can be shown at a time.
@@ -28197,8 +28222,9 @@ var baseMaps = {
 
 // Overlays that can be toggled on or off
 var overlayMaps = {
-  Weekdays: weekdaysLayer,
-  Weekends: weekendsLayer
+  LowSatisfaction: lowsatisfactionLayer,
+  MiddleSatisfaction: middlesatisfactionLayer,
+  HighSatisfaction: highsatisfactionLayer,
 };
 
 // Create a map object, and set the default layers.
@@ -28206,31 +28232,23 @@ var myMap = L.map("map", {
   center: [47.497913, 19.040236],
   zoom: 12,
   //default layer
-  layers: [street, weekdaysLayer]
+  layers: [street, lowsatisfactionLayer]
 });
 
 
-function markerSize(realSum) {
-  return Math.sqrt(realSum) * 0.3;
+function markerSize(markerRadius) {
+  return Math.sqrt(markerRadius) * 0.3;
 }
 
-for (let airbnb_weekends of weekends) {
-  L.circle([airbnb_weekends["lat"],airbnb_weekends["lng"]], {
+for (let airbnb of Budapest) {
+  L.circle([airbnb["lat"], airbnb["lng"]], {
     fillOpacity: 0.75,
     color: "black",
-    fillColor: "lightblue",
-    radius: markerSize(airbnb_weekends["realSum"])
+    fillColor: "blue",
+    radius: markerSize(airbnb["realSum"])
   }).addTo(myMap);
 }
 
-for (let airbnb_weekdays of weekdays) {
-  L.circle([airbnb_weekdays["lat"],airbnb_weekdays["lng"]], {
-    fillOpacity: 0.75,
-    color: "black",
-    fillColor: "lightblue",
-    radius: markerSize(airbnb_weekdays["realSum"])
-  }).addTo(myMap);
-}
 
 // Pass our map layers to our layer control.
 // Add the layer control to the map.
