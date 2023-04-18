@@ -26568,14 +26568,14 @@ var weekdaysMarkers= [];
 for (var i = 0; i < weekends.length; i++) {
   // loop through the cities array, create a new marker, and push it to the cityMarkers array
   weekendsMarkers.push(
-    L.marker([weekends[i].lat, weekends[i].lng]).bindPopup("<h1>" + weekends[i].realSum + "</h1>")
+    L.marker([weekends[i].lat, weekends[i].lng]).bindPopup("<h1>" +"€ "+ weekends[i].realSum.toFixed(2) + "</h1>")
   );
 }
 
 for (var i = 0; i < weekdays.length; i++) {
   // loop through the cities array, create a new marker, and push it to the cityMarkers array
   weekdaysMarkers.push(
-    L.marker([weekdays[i].lat, weekdays[i].lng]).bindPopup("<h1>" + weekdays[i].realSum + "</h1>")
+    L.marker([weekdays[i].lat, weekdays[i].lng]).bindPopup("<h1>" +"€ "+ weekdays[i].realSum.toFixed(2) + "</h1>")
   );
 }
 
