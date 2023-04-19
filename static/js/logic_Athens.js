@@ -36961,7 +36961,7 @@ Athens = [{
   "loc": "Athens"
 }];
 
-// An array that will store the created cityMarkers
+// An array that will store the created Markers
 var lowsatisfactionMarkers = [];
 var middlesatisfactionMarkers = [];
 var highsatisfactionMarkers = [];

@@ -1,7 +1,6 @@
 var ratings = [];
 
 for (var i = 0; i < weekdays.length; i++) {
-  // loop through the cities array, create a new marker, and push it to the cityMarkers array
   ratings.push(weekdays[i].guest_satisfaction_overall);
 }
 console.log(ratings);

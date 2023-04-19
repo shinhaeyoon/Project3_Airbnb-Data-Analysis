@@ -14571,7 +14571,7 @@ var highsatisfactionMarkers = [];
 
 for (var i = 0; i < Amsterdam.length; i++) {
   if (Amsterdam[i].guest_satisfaction_overall < 90) {
-    // loop through the cities array, create a new marker, and push it to the cityMarkers array
+    // loop through the each array, create a new marker, and push it to the Markers array
     lowsatisfactionMarkers.push(
       L.marker(
         [Amsterdam[i].lat, Amsterdam[i].lng]
@@ -14607,8 +14607,7 @@ for (var i = 0; i < Amsterdam.length; i++) {
 
 
 
-// Add all the cityMarkers to a new layer group.
-// Now, we can handle them as one group instead of referencing each one individually.
+// Add all the yMarkers to a new layer group.
 var lowsatisfactionLayer = L.layerGroup(lowsatisfactionMarkers);
 var middlesatisfactionLayer = L.layerGroup(middlesatisfactionMarkers);
 var highsatisfactionLayer = L.layerGroup(highsatisfactionMarkers);
