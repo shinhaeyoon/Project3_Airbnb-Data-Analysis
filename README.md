@@ -1,25 +1,22 @@
 # Project3
-- Airbnb prices in European cities (includes long and lat): https://www.kaggle.com/datasets/thedevastator/airbnb-prices-in-european-cities
-- What story are we telling with this data:
-  Helping the user choose city to vacation based on airbnb prices and characteristics
-- Affordability on weekdays vs weekends
-- Room type availability on weekdays and weekends
-- Airbnb ratings/ guest satisfaction (bins)
-- BONUS: distance from city center and metro
+Data Source: Airbnb prices in European cities data from Kaggle 
+Sample: 50,000 Airbnb locations spread across 10 European cities
+Cities : Amsterdam, Athens, Barcelona, Berlin, Budapest, Lisbon, London, Paris, Rome, Vienna
+Goal: Helping the user find airbnb rentals based on prices and characteristics
 
---------------------------------------------------------------
-- Maps: Heat maps to show the highest prices in Europe
-- Chart.js 
-- Using SQLite Database
-- Flasks: refer to SQL-Alchemy homework
-
+Airbnb ratings/guest satisfaction - Plotly
+Interactive map - Leaflet
+Database and Flask
+City by city room rate - Chart.js
 
 Steps:
-1. Choice of Data sources
-2. ETL / Notebook
-3. Database Schema
-4. Flask API endpoints
-5. communication d3 <=> flask
-6. html/css layout
-7. code /charts / table
-8. new JS library charts.js
+Read data and created merged dataframes for the weekday and weekend data sets
+Created a database and inserted the weekday and weekend tables into the database
+As a parallel step, jsonify the data
+Use the jsonifed data, javascript and leaflet to create a visual representation of the data points by city within a map
+Add bins to the data to aggregate data by guest ratings and prices
+Enable filter options allowing the user to filter by guest ratings and prices
+Display Airbnb properties based on user filter selections 
+
+
+View Full Presentation:https://docs.google.com/presentation/d/1933VIYkBSk9nQKQhQRMaaEQRGvMNc4l35XhRx-L4_-k/edit#slide=id.g2182675cd07_0_273
